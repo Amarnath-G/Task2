@@ -12,6 +12,7 @@ pipeline {
     post{
         success{
             emailext( subject:"Job ${env.JOB_NAME} $env.BUILD_NUMBER",
+            mimeType:'text/html',
             body:"""
                         <h2>Jenkins Build Failure</h2>
                         Job Name:${env.JOB_NAME}
