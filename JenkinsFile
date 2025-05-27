@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World'
+            }
+        }
+    }
+    
+    post{
+        success{
+            emailext( subject:"Job ${env.JOB_NAME} $env.BUILD_NUMBER",
+            body:"""
+                        <h2>Jenkins Build Failure</h2>
+                        Job Name:${env.JOB_NAME}
+                        Build Number:${env.BUILD_NUMBER}
+                        Status:Failure
+                        Build URL:<a href=${env.BUILD_URL}>${env.BUILD_URL}</a></p>
+                        Jenkins Server:${env.JENKINS_URL}
+                        <br><br><hr>
+            """,to:'amarnath.gongadisetty,gamarnathacct@gmail.com')
+        }
+        failure{
+            emailext(subject:"Job ${env.JOB_NAME} $env.BUILD_NUMBER",
+            mimeType:'text/html',
+            body:"""
+                        <h2>Jenkins Build Failure</h2>
+                        Job Name:${env.JOB_NAME}
+                        Build Number:${env.BUILD_NUMBER}
+                        Status:Failure
+                        Build URL:<a href=${env.BUILD_URL}>${env.BUILD_URL}</a></p>
+                        Jenkins Server:${env.JENKINS_URL}
+                        <br><br><hr>
+            """,to:'amarnath.gongadisetty,gamarnathacct@gmail.com')
+        }
+    }
+}
